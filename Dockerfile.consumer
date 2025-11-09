@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy consumer code
+COPY src/consumer /app/consumer
+
+CMD ["python", "-u", "consumer/kafka_consumer.py"]
