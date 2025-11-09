@@ -55,7 +55,7 @@ class BinanceProducer:
                     retries=3,
                     compression_type='gzip'
                 )
-                logger.info("✓ Successfully connected to Kafka")
+                logger.info("Successfully connected to Kafka")
                 return True
             except Exception as e:
                 logger.error(f"Attempt {attempt + 1}/{max_retries} failed: {e}")
@@ -123,14 +123,13 @@ class BinanceProducer:
     
     def on_open(self, ws):
         """Handle WebSocket connection opening"""
-        logger.info(f"✓ WebSocket connected for symbols: {self.symbols}")
+        logger.info(f"WebSocket connected for symbols: {self.symbols}")
     
     def start(self):
         """Start the producer"""
         logger.info("="*80)
-        logger.info("STARTING BINANCE PRODUCER - MILESTONE 1")
-        logger.info("="*80)
-        
+        logger.info("STARTING BINANCE PRODUCER\n")
+
         # Connect to Kafka
         self.connect_kafka()
         
@@ -142,22 +141,26 @@ class BinanceProducer:
         logger.info(f"Connecting to Binance WebSocket...")
         logger.info(f"Streaming: {', '.join(self.symbols)}")
         
-        # Create WebSocket connection
-        websocket.enableTrace(False)
-        self.ws = websocket.WebSocketApp(
-            ws_url,
-            on_message=self.on_message,
-            on_error=self.on_error,
-            on_close=self.on_close,
-            on_open=self.on_open
-        )
-        
         # Run forever with automatic reconnection
         while True:
             try:
+                # Create NEW WebSocket connection each time
+                websocket.enableTrace(False)
+                self.ws = websocket.WebSocketApp(
+                    ws_url,
+                    on_message=self.on_message,
+                    on_error=self.on_error,
+                    on_close=self.on_close,
+                    on_open=self.on_open
+                )
+                
+                # Run the connection
                 self.ws.run_forever()
+                
+                # If we get here, connection closed
                 logger.info("WebSocket disconnected, reconnecting in 5 seconds...")
                 time.sleep(5)
+                
             except KeyboardInterrupt:
                 logger.info("Shutting down producer...")
                 break

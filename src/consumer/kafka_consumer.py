@@ -56,7 +56,7 @@ class CryptoConsumer:
                     auto_commit_interval_ms=5000,
                     max_poll_records=self.max_poll_records
                 )
-                logger.info("✓ Successfully connected to Kafka")
+                logger.info("Successfully connected to Kafka")
                 return True
             except Exception as e:
                 logger.error(f"Attempt {attempt + 1}/{max_retries} failed: {e}")
@@ -107,15 +107,9 @@ class CryptoConsumer:
     def start(self):
         """Start consuming messages"""
         logger.info("="*80)
-        logger.info("STARTING CRYPTO CONSUMER - MILESTONE 1 (STUB)")
-        logger.info("="*80)
+        logger.info("STARTING CRYPTO CONSUMER (STUB)")
         logger.info("This consumer prints raw trade data.")
-        logger.info("Next milestone will add:")
-        logger.info("  - Data cleaning and preprocessing")
-        logger.info("  - OHLC calculation (1s window)")
-        logger.info("  - Volatility calculation (10s window)")
-        logger.info("  - Parquet/CSV persistence")
-        logger.info("="*80)
+        ## Add data cleaning, preprocessing, OHLC, volatility, parquet persistence next
         
         # Connect to Kafka
         self.connect_kafka()
