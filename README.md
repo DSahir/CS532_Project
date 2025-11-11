@@ -103,6 +103,31 @@ MAX_POLL_RECORDS=500
 - **Throughput:** Test 1 vs 4 Kafka partitions
 - **Resource Usage:** Vary symbols count and replay speed
 
+## How to process the data?
+```bash
+export KAFKA_BOOTSTRAP="localhost:29092"
+export KAFKA_TOPIC="crypto-trades"
+export OUTPUT_DIR="$(pwd)/data/outputs"
+python src/consumer/stream_processor.py
+```
+The parquet should look like:
+
+timestamp       open       high        low      close  \
+0 2025-11-10 02:18:08+00:00  105828.33  105828.33  105828.33  105828.33   
+1 2025-11-10 02:18:09+00:00  105828.33  105828.33  105797.67  105799.75   
+2 2025-11-10 02:18:09+00:00  105792.68  105793.49  105792.68  105793.49   
+3 2025-11-10 02:18:10+00:00  105791.54  105791.54  105785.42  105785.42   
+4 2025-11-10 02:18:11+00:00  105785.41  105785.41  105785.41  105785.41   
+
+   symbol    volume        date  
+0  BTCUSD  0.000091  2025-11-10  
+1  BTCUSD  0.239019  2025-11-10  
+2  BTCUSD  0.002083  2025-11-10  
+3  BTCUSD  0.000058  2025-11-10  
+4  BTCUSD  0.000011  2025-11-10
+
+The high means the highest price during the 1 second. The low means the lowest price in the 1 sec. The open means the Opening price. 
+
 ## Useful Commands
 
 ```bash
@@ -138,3 +163,4 @@ docker exec kafka kafka-consumer-groups --bootstrap-server localhost:9092 --desc
 # Verify Kafka is accessible
 docker exec kafka kafka-broker-api-versions --bootstrap-server localhost:9092
 ```
+
