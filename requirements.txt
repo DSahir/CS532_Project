@@ -1,2 +1,9 @@
 kafka-python==2.0.2
 websocket-client==1.6.4
+pandas
+pyarrow
+numpy
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+plotly==5.18.0
+python-multipart==0.0.6
