@@ -9,6 +9,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import os
+import sys
+from pathlib import Path
+
+# Add src directory to Python path
+src_path = Path(__file__).parent.parent
+sys.path.insert(0, str(src_path))
 
 from api.routes import ohlc, volatility, visualizations
 
@@ -141,8 +147,13 @@ async def health():
 async def get_symbols():
     """Get available symbols"""
     from api.data_loader import DataLoader
-    OUTPUT_DIR = os.getenv("OUTPUT_DIR", "./data/outputs")
-    loader = DataLoader(OUTPUT_DIR)
+    # Get OUTPUT_DIR from environment or use relative path from project root
+    output_dir = os.getenv("OUTPUT_DIR")
+    if not output_dir:
+        # Default to data/outputs relative to project root
+        project_root = Path(__file__).parent.parent.parent
+        output_dir = str(project_root / "data" / "outputs")
+    loader = DataLoader(output_dir)
     return {"symbols": loader.get_available_symbols()}
 
 
