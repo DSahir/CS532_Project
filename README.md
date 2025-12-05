@@ -462,7 +462,7 @@ This is an academic project for Systems for Data Science course. For improvement
 
 Academic project - Systems for Data Science course.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Coinbase and Binance for WebSocket APIs
 - Apache Kafka for distributed streaming
